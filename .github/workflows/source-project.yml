@@ -1,0 +1,21 @@
+name: Source project archive
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  source:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+      - name: Decode project archive
+        run: base64 --decode project.zip.b64 > PersianCalendarWidget-source.zip
+      - name: Upload source archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: PersianCalendarWidget-source
+          path: PersianCalendarWidget-source.zip
+          if-no-files-found: error
