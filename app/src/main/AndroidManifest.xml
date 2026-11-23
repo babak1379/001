@@ -1,0 +1,12 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application android:allowBackup="true" android:label="ساعت و تقویم" android:theme="@android:style/Theme.Material.Light.NoActionBar">
+        <receiver android:name=".CalendarWidgetProvider" android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="com.abbas.persiancalendarwidget.ACTION_REFRESH"/>
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/calendar_widget_info"/>
+        </receiver>
+        <activity android:name=".ColorSettingsActivity" android:exported="true" android:label="رنگ نوشته‌های ویجت" android:theme="@android:style/Theme.Material.Light.Dialog.Alert"/>
+    </application>
+</manifest>
