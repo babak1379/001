@@ -8,8 +8,9 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.icu.util.Calendar as IcuCalendar
 import android.icu.util.IslamicCalendar
-import android.icu.util.PersianCalendar
+import android.icu.util.ULocale
 import android.widget.RemoteViews
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -46,7 +47,7 @@ class CalendarWidgetProvider : AppWidgetProvider() {
             val color = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getInt("text_color", Color.WHITE)
             val v = RemoteViews(context.packageName, R.layout.widget_calendar)
             val g = Calendar.getInstance().apply { time = now }
-            val p = PersianCalendar().apply { time = now }
+            val p = IcuCalendar.getInstance(ULocale.forLanguageTag("fa-IR-u-ca-persian")).apply { time = now }
             val h = IslamicCalendar().apply { time = now }
             v.setTextViewText(R.id.clockText, SimpleDateFormat("HH:mm", Locale.US).format(now))
             v.setTextViewText(R.id.weekdayText, weekdays[g.get(Calendar.DAY_OF_WEEK)-1])
