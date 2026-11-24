@@ -44,8 +44,7 @@ class CalendarWidgetProvider : AppWidgetProvider() {
 
         private data class CalendarEvent(val title: String, val officialHoliday: Boolean = false)
 
-        // Fixed Solar Hijri dates. Lunar religious holidays are intentionally kept out
-        // until their official annual dates are verified against the Iranian calendar.
+        // Fixed Solar Hijri dates. Lunar religious holidays need annual official-date verification.
         private val solarEvents = mapOf(
             "1-1" to listOf(CalendarEvent("آغاز نوروز", true)),
             "1-2" to listOf(CalendarEvent("عید نوروز", true)),
@@ -53,15 +52,15 @@ class CalendarWidgetProvider : AppWidgetProvider() {
             "1-4" to listOf(CalendarEvent("عید نوروز", true)),
             "1-12" to listOf(CalendarEvent("روز جمهوری اسلامی ایران", true)),
             "1-13" to listOf(CalendarEvent("روز طبیعت", true)),
-            "3-14" to listOf(CalendarEvent("رحلت امام خمینی (تعطیل رسمی)", true)),
-            "3-15" to listOf(CalendarEvent("قیام ۱۵ خرداد (تعطیل رسمی)", true)),
-            "5-7" to listOf(CalendarEvent("روز نیروی دریایی ارتش")),
-            "7-13" to listOf(
+            "3-14" to listOf(CalendarEvent("رحلت امام خمینی", true)),
+            "3-15" to listOf(CalendarEvent("قیام ۱۵ خرداد", true)),
+            "9-7" to listOf(CalendarEvent("روز نیروی دریایی ارتش")),
+            "8-13" to listOf(
                 CalendarEvent("روز دانش‌آموز"),
                 CalendarEvent("روز ملی مبارزه با استکبار جهانی")
             ),
-            "10-22" to listOf(CalendarEvent("پیروزی انقلاب اسلامی (تعطیل رسمی)", true)),
-            "11-29" to listOf(CalendarEvent("ملی شدن صنعت نفت ایران (تعطیل رسمی)", true))
+            "11-22" to listOf(CalendarEvent("پیروزی انقلاب اسلامی", true)),
+            "12-29" to listOf(CalendarEvent("ملی شدن صنعت نفت ایران", true))
         )
 
         fun updateAll(context: Context) {
@@ -87,7 +86,7 @@ class CalendarWidgetProvider : AppWidgetProvider() {
             val persianDay = persian.get(Calendar.DAY_OF_MONTH)
             val events = solarEvents["$persianMonth-$persianDay"].orEmpty()
             val eventText = events.joinToString("\n") { event ->
-                if (event.officialHoliday) "${event.title}" else event.title
+                if (event.officialHoliday) "${event.title} (تعطیل رسمی)" else event.title
             }
             views.setTextViewText(R.id.eventsText, eventText)
 
