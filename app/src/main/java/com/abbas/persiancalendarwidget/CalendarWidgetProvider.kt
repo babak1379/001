@@ -112,7 +112,7 @@ class CalendarWidgetProvider : AppWidgetProvider() {
             views.setTextViewText(R.id.hDay, hijri.get(Calendar.DAY_OF_MONTH).toString())
 
             intArrayOf(
-                R.id.clockText, R.id.weekdayText, R.id.eventsText,
+                R.id.clockText, R.id.creatorText, R.id.weekdayText, R.id.eventsText,
                 R.id.pMonth, R.id.pYear, R.id.pMonthNum, R.id.pDay,
                 R.id.gMonth, R.id.gYear, R.id.gMonthNum, R.id.gDay,
                 R.id.hMonth, R.id.hYear, R.id.hMonthNum, R.id.hDay
