@@ -74,6 +74,8 @@ class CalendarWidgetProvider : AppWidgetProvider() {
             val prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
             val color = prefs.getInt("text_color", Color.CYAN)
             val views = RemoteViews(context.packageName, R.layout.widget_calendar)
+            views.setInt(R.id.widgetRoot, "setBackgroundColor", Color.TRANSPARENT)
+            views.setInt(R.id.clockText, "setBackgroundColor", Color.TRANSPARENT)
 
             val gregorian = Calendar.getInstance().apply { time = now }
             val persian = IcuCalendar.getInstance(ULocale.forLanguageTag("fa-IR-u-ca-persian")).apply { time = now }
