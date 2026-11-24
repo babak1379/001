@@ -5,97 +5,106 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:layoutDirection="rtl"
-    android:background="@drawable/widget_outline"
-    android:padding="2dp">
+    android:background="#FF000000">
 
     <TextView
         android:id="@+id/clockText"
         android:layout_width="match_parent"
-        android:layout_height="58dp"
+        android:layout_height="52dp"
         android:gravity="center"
         android:fontFamily="sans-serif"
         android:includeFontPadding="false"
         android:singleLine="true"
         android:text="15:42"
         android:textColor="#FF00D8D8"
-        android:textSize="56sp"
+        android:textSize="54sp"
         android:textStyle="bold" />
 
     <LinearLayout
+        android:id="@+id/calendarFrame"
         android:layout_width="match_parent"
-        android:layout_height="42dp"
-        android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:layoutDirection="rtl"
-        android:gravity="center_vertical">
+        android:background="@drawable/widget_outline"
+        android:padding="2dp">
 
-        <TextView
-            android:id="@+id/weekdayText"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1.7"
-            android:gravity="center"
-            android:singleLine="true"
-            android:text="سه‌شنبه"
-            android:textColor="#FF00D8D8"
-            android:textSize="25sp"
-            android:textStyle="bold" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:orientation="horizontal"
+            android:layoutDirection="rtl"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/weekdayText"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.7"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="سه‌شنبه"
+                android:textColor="#FF00D8D8"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="#FFFFFFFF" />
+
+            <TextView
+                android:id="@+id/eventsText"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2.15"
+                android:gravity="center"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"
+                android:text=""
+                android:textColor="#FF00D8D8"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:maxLines="2"
+                android:ellipsize="end" />
+        </LinearLayout>
 
         <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
             android:background="#FFFFFFFF" />
 
-        <TextView
-            android:id="@+id/eventsText"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="2.15"
-            android:gravity="center"
-            android:paddingStart="4dp"
-            android:paddingEnd="4dp"
-            android:text=""
-            android:textColor="#FF00D8D8"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            android:maxLines="2"
-            android:ellipsize="end" />
-    </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="26dp"
+            android:orientation="horizontal"
+            android:layoutDirection="rtl">
+            <TextView android:id="@+id/pDay" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="0.9" android:gravity="center" android:singleLine="true" android:background="@drawable/widget_cell" android:padding="1dp" android:text="۱" android:textColor="#FF00D8D8" android:textSize="17sp" android:textStyle="bold"/>
+            <TextView android:id="@+id/pMonthNum" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="0.8" android:gravity="center" android:singleLine="true" android:background="@drawable/widget_cell" android:padding="1dp" android:text="۳" android:textColor="#FF00D8D8" android:textSize="17sp" android:textStyle="bold"/>
+            <TextView android:id="@+id/pYear" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1.0" android:gravity="center" android:singleLine="true" android:background="@drawable/widget_cell" android:padding="1dp" android:text="۱۴۰۵" android:textColor="#FF00D8D8" android:textSize="17sp" android:textStyle="bold"/>
+            <TextView android:id="@+id/pMonth" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1.15" android:gravity="center" android:singleLine="true" android:background="@drawable/widget_cell" android:padding="1dp" android:text="آذر" android:textColor="#FF00D8D8" android:textSize="17sp" android:textStyle="bold"/>
+        </LinearLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#FFFFFFFF" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="26dp"
+            android:orientation="horizontal"
+            android:layoutDirection="rtl">
+            <TextView android:id="@+id/gDay" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="0.9" android:gravity="center" android:singleLine="true" android:background="@drawable/widget_cell" android:padding="1dp" android:text="۲۴" android:textColor="#FF00D8D8" android:textSize="17sp" android:textStyle="bold"/>
+            <TextView android:id="@+id/gMonthNum" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="0.8" android:gravity="center" android:singleLine="true" android:background="@drawable/widget_cell" android:padding="1dp" android:text="۱۱" android:textColor="#FF00D8D8" android:textSize="17sp" android:textStyle="bold"/>
+            <TextView android:id="@+id/gYear" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1.0" android:gravity="center" android:singleLine="true" android:background="@drawable/widget_cell" android:padding="1dp" android:text="۲۰۲۶" android:textColor="#FF00D8D8" android:textSize="17sp" android:textStyle="bold"/>
+            <TextView android:id="@+id/gMonth" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1.15" android:gravity="center" android:singleLine="true" android:background="@drawable/widget_cell" android:padding="1dp" android:text="نوامبر" android:textColor="#FF00D8D8" android:textSize="17sp" android:textStyle="bold"/>
+        </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="28dp"
-        android:orientation="horizontal"
-        android:layoutDirection="rtl">
-        <TextView android:id="@+id/pDay" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="0.9" android:gravity="center" android:singleLine="true" android:background="@drawable/widget_cell" android:padding="1dp" android:text="۱" android:textColor="#FF00D8D8" android:textSize="18sp" android:textStyle="bold"/>
-        <TextView android:id="@+id/pMonthNum" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="0.8" android:gravity="center" android:singleLine="true" android:background="@drawable/widget_cell" android:padding="1dp" android:text="۳" android:textColor="#FF00D8D8" android:textSize="18sp" android:textStyle="bold"/>
-        <TextView android:id="@+id/pYear" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1.0" android:gravity="center" android:singleLine="true" android:background="@drawable/widget_cell" android:padding="1dp" android:text="۱۴۰۵" android:textColor="#FF00D8D8" android:textSize="18sp" android:textStyle="bold"/>
-        <TextView android:id="@+id/pMonth" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1.15" android:gravity="center" android:singleLine="true" android:background="@drawable/widget_cell" android:padding="1dp" android:text="آذر" android:textColor="#FF00D8D8" android:textSize="18sp" android:textStyle="bold"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="28dp"
-        android:orientation="horizontal"
-        android:layoutDirection="rtl">
-        <TextView android:id="@+id/gDay" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="0.9" android:gravity="center" android:singleLine="true" android:background="@drawable/widget_cell" android:padding="1dp" android:text="۲۴" android:textColor="#FF00D8D8" android:textSize="18sp" android:textStyle="bold"/>
-        <TextView android:id="@+id/gMonthNum" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="0.8" android:gravity="center" android:singleLine="true" android:background="@drawable/widget_cell" android:padding="1dp" android:text="۱۱" android:textColor="#FF00D8D8" android:textSize="18sp" android:textStyle="bold"/>
-        <TextView android:id="@+id/gYear" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1.0" android:gravity="center" android:singleLine="true" android:background="@drawable/widget_cell" android:padding="1dp" android:text="۲۰۲۶" android:textColor="#FF00D8D8" android:textSize="18sp" android:textStyle="bold"/>
-        <TextView android:id="@+id/gMonth" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1.15" android:gravity="center" android:singleLine="true" android:background="@drawable/widget_cell" android:padding="1dp" android:text="نوامبر" android:textColor="#FF00D8D8" android:textSize="18sp" android:textStyle="bold"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="28dp"
-        android:orientation="horizontal"
-        android:layoutDirection="rtl">
-        <TextView android:id="@+id/hDay" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="0.9" android:gravity="center" android:singleLine="true" android:background="@drawable/widget_cell" android:padding="1dp" android:text="۱۵" android:textColor="#FF00D8D8" android:textSize="18sp" android:textStyle="bold"/>
-        <TextView android:id="@+id/hMonthNum" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="0.8" android:gravity="center" android:singleLine="true" android:background="@drawable/widget_cell" android:padding="1dp" android:text="۵" android:textColor="#FF00D8D8" android:textSize="18sp" android:textStyle="bold"/>
-        <TextView android:id="@+id/hYear" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1.0" android:gravity="center" android:singleLine="true" android:background="@drawable/widget_cell" android:padding="1dp" android:text="۱۴۴۸" android:textColor="#FF00D8D8" android:textSize="18sp" android:textStyle="bold"/>
-        <TextView android:id="@+id/hMonth" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1.15" android:gravity="center" android:singleLine="true" android:background="@drawable/widget_cell" android:padding="1dp" android:text="جمادی‌الاول" android:textColor="#FF00D8D8" android:textSize="18sp" android:textStyle="bold"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="26dp"
+            android:orientation="horizontal"
+            android:layoutDirection="rtl">
+            <TextView android:id="@+id/hDay" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="0.9" android:gravity="center" android:singleLine="true" android:background="@drawable/widget_cell" android:padding="1dp" android:text="۱۵" android:textColor="#FF00D8D8" android:textSize="17sp" android:textStyle="bold"/>
+            <TextView android:id="@+id/hMonthNum" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="0.8" android:gravity="center" android:singleLine="true" android:background="@drawable/widget_cell" android:padding="1dp" android:text="۵" android:textColor="#FF00D8D8" android:textSize="17sp" android:textStyle="bold"/>
+            <TextView android:id="@+id/hYear" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1.0" android:gravity="center" android:singleLine="true" android:background="@drawable/widget_cell" android:padding="1dp" android:text="۱۴۴۸" android:textColor="#FF00D8D8" android:textSize="17sp" android:textStyle="bold"/>
+            <TextView android:id="@+id/hMonth" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1.15" android:gravity="center" android:singleLine="true" android:background="@drawable/widget_cell" android:padding="1dp" android:text="جمادی‌الاول" android:textColor="#FF00D8D8" android:textSize="17sp" android:textStyle="bold"/>
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>
