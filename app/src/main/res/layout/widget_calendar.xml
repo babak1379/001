@@ -26,7 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="18dp"
         android:gravity="right|center_vertical"
-        android:paddingEnd="6dp"
+        android:paddingEnd="20dp"
         android:singleLine="true"
         android:text="ساخت عباس بسطامی"
         android:textColor="#BFFFFFFF"
