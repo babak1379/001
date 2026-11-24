@@ -117,6 +117,8 @@ class CalendarWidgetProvider : AppWidgetProvider() {
                 R.id.gMonth, R.id.gYear, R.id.gMonthNum, R.id.gDay,
                 R.id.hMonth, R.id.hYear, R.id.hMonthNum, R.id.hDay
             ).forEach { views.setTextColor(it, color) }
+            // Apply the selected palette color explicitly to the creator credit.
+            views.setTextColor(R.id.creatorText, color)
 
             val settingsIntent = Intent(context, ColorSettingsActivity::class.java)
             val settingsPendingIntent = PendingIntent.getActivity(
