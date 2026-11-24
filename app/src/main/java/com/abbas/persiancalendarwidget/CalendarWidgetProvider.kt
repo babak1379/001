@@ -85,8 +85,12 @@ class CalendarWidgetProvider : AppWidgetProvider() {
             val persianMonth = persian.get(Calendar.MONTH) + 1
             val persianDay = persian.get(Calendar.DAY_OF_MONTH)
             val events = solarEvents["$persianMonth-$persianDay"].orEmpty()
-            val eventText = events.joinToString("\n") { event ->
-                if (event.officialHoliday) "${event.title} (تعطیل رسمی)" else event.title
+            val eventText = if (events.isEmpty()) {
+                "بدون رویداد"
+            } else {
+                events.joinToString("\n") { event ->
+                    if (event.officialHoliday) "${event.title} (تعطیل رسمی)" else event.title
+                }
             }
             views.setTextViewText(R.id.eventsText, eventText)
 
