@@ -22,6 +22,7 @@ class CalendarWidgetProvider : AppWidgetProvider() {
         ids.forEach { updateOne(context, manager, it) }
         scheduleNextMinute(context)
     }
+
     override fun onReceive(context: Context, intent: Intent) {
         super.onReceive(context, intent)
         if (intent.action == ACTION_REFRESH) {
@@ -31,48 +32,108 @@ class CalendarWidgetProvider : AppWidgetProvider() {
             scheduleNextMinute(context)
         }
     }
+
     companion object {
         const val ACTION_REFRESH = "com.abbas.persiancalendarwidget.ACTION_REFRESH"
         private const val PREFS = "widget_settings"
+
         private val persianMonths = arrayOf("فروردین","اردیبهشت","خرداد","تیر","مرداد","شهریور","مهر","آبان","آذر","دی","بهمن","اسفند")
         private val gregorianMonths = arrayOf("ژانویه","فوریه","مارس","آوریل","مه","ژوئن","ژوئیه","اوت","سپتامبر","اکتبر","نوامبر","دسامبر")
         private val hijriMonths = arrayOf("محرم","صفر","ربیع‌الاول","ربیع‌الثانی","جمادی‌الاول","جمادی‌الثانی","رجب","شعبان","رمضان","شوال","ذی‌القعده","ذی‌الحجه")
         private val weekdays = arrayOf("یکشنبه","دوشنبه","سه‌شنبه","چهارشنبه","پنجشنبه","جمعه","شنبه")
+
+        private data class CalendarEvent(val title: String, val officialHoliday: Boolean = false)
+
+        // Fixed Solar Hijri dates. Lunar religious holidays are intentionally kept out
+        // until their official annual dates are verified against the Iranian calendar.
+        private val solarEvents = mapOf(
+            "1-1" to listOf(CalendarEvent("آغاز نوروز", true)),
+            "1-2" to listOf(CalendarEvent("عید نوروز", true)),
+            "1-3" to listOf(CalendarEvent("عید نوروز", true)),
+            "1-4" to listOf(CalendarEvent("عید نوروز", true)),
+            "1-12" to listOf(CalendarEvent("روز جمهوری اسلامی ایران", true)),
+            "1-13" to listOf(CalendarEvent("روز طبیعت", true)),
+            "3-14" to listOf(CalendarEvent("رحلت امام خمینی (تعطیل رسمی)", true)),
+            "3-15" to listOf(CalendarEvent("قیام ۱۵ خرداد (تعطیل رسمی)", true)),
+            "5-7" to listOf(CalendarEvent("روز نیروی دریایی ارتش")),
+            "7-13" to listOf(
+                CalendarEvent("روز دانش‌آموز"),
+                CalendarEvent("روز ملی مبارزه با استکبار جهانی")
+            ),
+            "10-22" to listOf(CalendarEvent("پیروزی انقلاب اسلامی (تعطیل رسمی)", true)),
+            "11-29" to listOf(CalendarEvent("ملی شدن صنعت نفت ایران (تعطیل رسمی)", true))
+        )
+
         fun updateAll(context: Context) {
-            val m = AppWidgetManager.getInstance(context)
-            m.getAppWidgetIds(ComponentName(context, CalendarWidgetProvider::class.java)).forEach { updateOne(context,m,it) }
+            val manager = AppWidgetManager.getInstance(context)
+            manager.getAppWidgetIds(ComponentName(context, CalendarWidgetProvider::class.java))
+                .forEach { updateOne(context, manager, it) }
         }
+
         private fun updateOne(context: Context, manager: AppWidgetManager, id: Int) {
             val now = Date()
-            val color = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getInt("text_color", Color.WHITE)
-            val v = RemoteViews(context.packageName, R.layout.widget_calendar)
-            val g = Calendar.getInstance().apply { time = now }
-            val p = IcuCalendar.getInstance(ULocale.forLanguageTag("fa-IR-u-ca-persian")).apply { time = now }
-            val h = IslamicCalendar().apply { time = now }
-            v.setTextViewText(R.id.clockText, SimpleDateFormat("HH:mm", Locale.US).format(now))
-            v.setTextViewText(R.id.weekdayText, weekdays[g.get(Calendar.DAY_OF_WEEK)-1])
-            v.setTextViewText(R.id.pMonth, persianMonths[p.get(Calendar.MONTH)])
-            v.setTextViewText(R.id.pYear, p.get(Calendar.YEAR).toString())
-            v.setTextViewText(R.id.pMonthNum, (p.get(Calendar.MONTH)+1).toString())
-            v.setTextViewText(R.id.pDay, p.get(Calendar.DAY_OF_MONTH).toString())
-            v.setTextViewText(R.id.gMonth, gregorianMonths[g.get(Calendar.MONTH)])
-            v.setTextViewText(R.id.gYear, g.get(Calendar.YEAR).toString())
-            v.setTextViewText(R.id.gMonthNum, (g.get(Calendar.MONTH)+1).toString())
-            v.setTextViewText(R.id.gDay, g.get(Calendar.DAY_OF_MONTH).toString())
-            v.setTextViewText(R.id.hMonth, hijriMonths[h.get(Calendar.MONTH)])
-            v.setTextViewText(R.id.hYear, h.get(Calendar.YEAR).toString())
-            v.setTextViewText(R.id.hMonthNum, (h.get(Calendar.MONTH)+1).toString())
-            v.setTextViewText(R.id.hDay, h.get(Calendar.DAY_OF_MONTH).toString())
-            intArrayOf(R.id.clockText,R.id.weekdayText,R.id.pMonth,R.id.pYear,R.id.pMonthNum,R.id.pDay,R.id.gMonth,R.id.gYear,R.id.gMonthNum,R.id.gDay,R.id.hMonth,R.id.hYear,R.id.hMonthNum,R.id.hDay).forEach { v.setTextColor(it,color) }
-            val pi = PendingIntent.getActivity(context,0,Intent(context,ColorSettingsActivity::class.java),PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
-            v.setOnClickPendingIntent(R.id.widgetRoot,pi)
-            manager.updateAppWidget(id,v)
+            val prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+            val color = prefs.getInt("text_color", Color.CYAN)
+            val views = RemoteViews(context.packageName, R.layout.widget_calendar)
+
+            val gregorian = Calendar.getInstance().apply { time = now }
+            val persian = IcuCalendar.getInstance(ULocale.forLanguageTag("fa-IR-u-ca-persian")).apply { time = now }
+            val hijri = IslamicCalendar().apply { time = now }
+
+            views.setTextViewText(R.id.clockText, SimpleDateFormat("HH:mm", Locale.US).format(now))
+            views.setTextViewText(R.id.weekdayText, weekdays[gregorian.get(Calendar.DAY_OF_WEEK) - 1])
+
+            val persianMonth = persian.get(Calendar.MONTH) + 1
+            val persianDay = persian.get(Calendar.DAY_OF_MONTH)
+            val events = solarEvents["$persianMonth-$persianDay"].orEmpty()
+            val eventText = events.joinToString("\n") { event ->
+                if (event.officialHoliday) "${event.title}" else event.title
+            }
+            views.setTextViewText(R.id.eventsText, eventText)
+
+            views.setTextViewText(R.id.pMonth, persianMonths[persian.get(Calendar.MONTH)])
+            views.setTextViewText(R.id.pYear, persian.get(Calendar.YEAR).toString())
+            views.setTextViewText(R.id.pMonthNum, persianMonth.toString())
+            views.setTextViewText(R.id.pDay, persianDay.toString())
+
+            views.setTextViewText(R.id.gMonth, gregorianMonths[gregorian.get(Calendar.MONTH)])
+            views.setTextViewText(R.id.gYear, gregorian.get(Calendar.YEAR).toString())
+            views.setTextViewText(R.id.gMonthNum, (gregorian.get(Calendar.MONTH) + 1).toString())
+            views.setTextViewText(R.id.gDay, gregorian.get(Calendar.DAY_OF_MONTH).toString())
+
+            views.setTextViewText(R.id.hMonth, hijriMonths[hijri.get(Calendar.MONTH)])
+            views.setTextViewText(R.id.hYear, hijri.get(Calendar.YEAR).toString())
+            views.setTextViewText(R.id.hMonthNum, (hijri.get(Calendar.MONTH) + 1).toString())
+            views.setTextViewText(R.id.hDay, hijri.get(Calendar.DAY_OF_MONTH).toString())
+
+            intArrayOf(
+                R.id.clockText, R.id.weekdayText, R.id.eventsText,
+                R.id.pMonth, R.id.pYear, R.id.pMonthNum, R.id.pDay,
+                R.id.gMonth, R.id.gYear, R.id.gMonthNum, R.id.gDay,
+                R.id.hMonth, R.id.hYear, R.id.hMonthNum, R.id.hDay
+            ).forEach { views.setTextColor(it, color) }
+
+            val settingsIntent = Intent(context, ColorSettingsActivity::class.java)
+            val settingsPendingIntent = PendingIntent.getActivity(
+                context, 0, settingsIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
+            views.setOnClickPendingIntent(R.id.widgetRoot, settingsPendingIntent)
+            manager.updateAppWidget(id, views)
         }
+
         private fun scheduleNextMinute(context: Context) {
-            val a = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-            val i = Intent(context,CalendarWidgetProvider::class.java).setAction(ACTION_REFRESH)
-            val p = PendingIntent.getBroadcast(context,1,i,PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
-            a.setAndAllowWhileIdle(AlarmManager.RTC,(System.currentTimeMillis()/60000L+1L)*60000L,p)
+            val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            val intent = Intent(context, CalendarWidgetProvider::class.java).setAction(ACTION_REFRESH)
+            val pendingIntent = PendingIntent.getBroadcast(
+                context, 1, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
+            alarmManager.setAndAllowWhileIdle(
+                AlarmManager.RTC,
+                (System.currentTimeMillis() / 60000L + 1L) * 60000L,
+                pendingIntent
+            )
         }
     }
 }
