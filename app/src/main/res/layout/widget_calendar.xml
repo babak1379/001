@@ -11,7 +11,7 @@
         android:id="@+id/clockText"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:layout_marginBottom="58dp"
+        android:layout_marginBottom="40dp"
         android:gravity="center"
         android:fontFamily="sans-serif-black"
         android:includeFontPadding="false"
@@ -20,6 +20,18 @@
         android:textColor="#FF00D8D8"
         android:textSize="54sp"
         android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/creatorText"
+        android:layout_width="match_parent"
+        android:layout_height="18dp"
+        android:gravity="right|center_vertical"
+        android:paddingEnd="6dp"
+        android:singleLine="true"
+        android:text="ساخت عباس بسطامی"
+        android:textColor="#BFFFFFFF"
+        android:textSize="10sp"
+        android:textStyle="normal" />
 
     <LinearLayout
         android:id="@+id/calendarFrame"
